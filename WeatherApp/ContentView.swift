@@ -9,7 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var city: String = ""
+    @State private var city: String = ""
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
         ScrollView {
@@ -21,7 +25,6 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 5)
                                 .stroke(Color.gray, lineWidth: 1)
                         )
-                    
                     Button {
                         print("Search tapped")
                     } label: {
@@ -29,18 +32,24 @@ struct ContentView: View {
                     }
                     .padding(7)
                     .foregroundStyle(.gray)
-                    
                 }
+                
                 VStack(alignment: .leading) {
-                    Text("London")
+                    Text("Location: N/A")
                     HStack {
-                        Text("13°")
+                        Text("N/A")
+                            .font(.system(size: 32))
+                            .fontWeight(.bold)
                         Image(systemName: "sun.max.fill")
                     }
-                    Text("Overcast clouds")
+                    Text("Description: N/A")
                     HStack{
-                        Text("Max: 17°")
-                        Text("Min: 7°")
+                        Text("Max:")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                        Text("Min:")
+                        Text("N/A")
+                            .fontWeight(.bold)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -50,6 +59,76 @@ struct ContentView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color.gray)
                 )
+                
+                LazyVGrid(columns: columns, spacing: 20) {
+                    VStack(alignment: .leading) {
+                        Text("Feels like")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.gray)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Wind")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.gray)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Humidity")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.gray)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Pressure")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.gray)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Visibility")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.gray)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Cloudiness")
+                        Text("N/A")
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.gray)
+                    }
+                }
+                .foregroundStyle(.gray)
             }
             .padding()
         }
