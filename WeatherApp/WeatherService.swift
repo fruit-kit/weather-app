@@ -9,7 +9,7 @@ import Foundation
 
 final class WeatherService {
     
-    func fetchWeather(city: String) async throws -> WeatherResponce {
+    func fetchWeather(city: String) async throws -> WeatherResponse {
         
         let trimmingCity = city.trimmingCharacters(in: .whitespacesAndNewlines)
         let cityToUse = trimmingCity.isEmpty ? "Kyiv" : trimmingCity
@@ -31,7 +31,7 @@ final class WeatherService {
         let dataString = String(data: data, encoding: .utf8)!
         print(dataString)
         
-        let decodedWeather = try JSONDecoder().decode(WeatherResponce.self, from: data)
+        let decodedWeather = try JSONDecoder().decode(WeatherResponse.self, from: data)
         
         return decodedWeather
     }

@@ -7,7 +7,7 @@
 import Foundation
 
 // MARK: - Welcome
-struct WeatherResponce: Codable {
+struct WeatherResponse: Codable {
     let coord: Coord
     let weather: [Weather]
     let base: String

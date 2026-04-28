@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var city: String = ""
-    @State private var weather: WeatherResponce?
+    @State private var weather: WeatherResponse?
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -45,19 +45,19 @@ struct ContentView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text(weather?.name ?? "Location: N/A")
+                    Text(weather?.name ?? "N/A")
                     HStack {
                         if let weather {
                             Text("\(Int(weather.main.temp))°")
                                 .font(.system(size: 32))
                                 .fontWeight(.bold)
                         } else {
-                            Text("Temp: N/A")
+                            Text("N/A")
                         }
                         Image(systemName: "sun.max.fill")
                     }
                     if let weather {
-                        Text(weather.weather.first?.description ?? "Description: N/A")
+                        Text(weather.weather.first?.description ?? "N/A")
                     }
                     HStack{
                         if let weather {
@@ -75,108 +75,25 @@ struct ContentView: View {
                 )
                 
                 LazyVGrid(columns: columns, spacing: 20) {
-                    VStack(alignment: .leading) {
-                        if let weather {
-                            Text("Feels like")
-                            Text("\(Int(weather.main.feelsLike))°")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("Feels like")
-                            Text("N/A")
-                                .fontWeight(.bold)
+                    if let weather {
+                        WeatherInfoCardView(title: "Feels like",
+                                            value: "\(Int(weather.main.feelsLike))°")
+                        WeatherInfoCardView(title: "Wind",
+                                            value: "\(Int(weather.wind.speed)) m/s")
+                        WeatherInfoCardView(title: "Humidity",
+                                            value: "\(Int(weather.main.humidity))%")
+                        WeatherInfoCardView(title: "Pressure",
+                                            value: "\(Int(weather.main.pressure)) hPa")
+                        WeatherInfoCardView(title: "Visibility",
+                                            value: "\(Int(weather.visibility / 1000)) km")
+                        WeatherInfoCardView(title: "Cloudiness",
+                                            value: "\(Int(weather.clouds.all))%")
+                    } else {
+                        ForEach(0..<6) { _ in
+                            WeatherInfoCardView(title: "-", value: "N/A")
                         }
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    }
-                    VStack(alignment: .leading) {
-                        if let weather {
-                            Text("Wind")
-                            Text("\(Int(weather.wind.speed)) m/s")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("Wind")
-                            Text("N/A")
-                                .fontWeight(.bold)
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    }
-                    VStack(alignment: .leading) {
-                        if let weather {
-                            Text("Humidity")
-                            Text("\(weather.main.humidity) %")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("Humidity")
-                            Text("N/A")
-                                .fontWeight(.bold)
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    }
-                    VStack(alignment: .leading) {
-                        if let weather {
-                            Text("Pressure")
-                            Text("\(weather.main.pressure) hPa")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("Pressure")
-                            Text("N/A")
-                                .fontWeight(.bold)
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    }
-                    VStack(alignment: .leading) {
-                        if let weather {
-                            Text("Visibility")
-                            Text("\(weather.visibility / 1000) km")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("Visibility")
-                            Text("N/A")
-                                .fontWeight(.bold)
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    }
-                    VStack(alignment: .leading) {
-                        if let weather {
-                            Text("Cloudiness")
-                            Text("\(weather.clouds.all) %")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("Cloudiness")
-                            Text("N/A")
-                                .fontWeight(.bold)
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray)
-                    }
+                    
                 }
                 .foregroundStyle(.gray)
             }
