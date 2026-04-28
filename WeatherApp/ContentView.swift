@@ -51,10 +51,15 @@ struct ContentView: View {
                             Text("\(Int(weather.main.temp))°")
                                 .font(.system(size: 32))
                                 .fontWeight(.bold)
+                            if let icon = weather.weather.first?.icon {
+                                Image(systemName: mapWeather(icon: icon))
+                            } else {
+                                Image(systemName: "questionmark")
+                            }
                         } else {
                             Text("N/A")
+                            Image(systemName: "questionmark")
                         }
-                        Image(systemName: "sun.max.fill")
                     }
                     if let weather {
                         Text(weather.weather.first?.description ?? "N/A")
