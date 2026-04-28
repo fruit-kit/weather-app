@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var city: String = ""
-    @State private var weather: WeatherResponse?
+    @StateObject private var viewModel = WeatherViewModel()
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -20,7 +20,7 @@ struct ContentView: View {
         ScrollView {
             VStack(spacing: 20) {
                 HStack {
-                    TextField("\(Image(systemName: "magnifyingglass")) Search city...", text: $city)
+                    TextField("\(Image(systemName: "magnifyingglass")) Search city...", text: $viewModel.city)
                         .padding(7)
                         .overlay(
                             RoundedRectangle(cornerRadius: 5)
@@ -28,14 +28,7 @@ struct ContentView: View {
                         )
                     Button {
                         Task {
-                            do {
-                                let service = WeatherService()
-                                weather = try await service.fetchWeather(city: city)
-                                city = ""
-                            }
-                            catch {
-                                print(error.localizedDescription)
-                            }
+                            await viewModel.fetch()
                         }
                     } label: {
                         Text("Search")
@@ -45,9 +38,9 @@ struct ContentView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text(weather?.name ?? "N/A")
+                    Text(viewModel.weather?.name ?? "N/A")
                     HStack {
-                        if let weather {
+                        if let weather = viewModel.weather {
                             Text("\(Int(weather.main.temp))°")
                                 .font(.system(size: 32))
                                 .fontWeight(.bold)
@@ -61,11 +54,11 @@ struct ContentView: View {
                             Image(systemName: "questionmark")
                         }
                     }
-                    if let weather {
+                    if let weather = viewModel.weather {
                         Text(weather.weather.first?.description ?? "N/A")
                     }
                     HStack{
-                        if let weather {
+                        if let weather = viewModel.weather {
                             Text("Max: \(Int(weather.main.tempMax))°")
                             Text("Min: \(Int(weather.main.tempMin))°")
                         }
@@ -80,7 +73,7 @@ struct ContentView: View {
                 )
                 
                 LazyVGrid(columns: columns, spacing: 20) {
-                    if let weather {
+                    if let weather = viewModel.weather {
                         WeatherInfoCardView(title: "Feels like",
                                             value: "\(Int(weather.main.feelsLike))°")
                         WeatherInfoCardView(title: "Wind",
