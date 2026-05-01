@@ -41,4 +41,17 @@ class WeatherViewModel: ObservableObject {
         }
     }
     
+    func formatTime(timestamp: Int?) -> String {
+        guard let timestamp else {
+            return "--"
+        }
+        
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        
+        return formatter.string(from: date)
+    }
+    
 }

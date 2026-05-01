@@ -86,6 +86,10 @@ struct ContentView: View {
                                             value: "\(Int(weather.visibility / 1000)) km")
                         WeatherInfoCardView(title: "Cloudiness",
                                             value: "\(Int(weather.clouds.all))%")
+                        WeatherInfoCardView(title: "Sunrise",
+                                            value: viewModel.formatTime(timestamp: weather.sys.sunrise))
+                        WeatherInfoCardView(title: "Sunset",
+                                            value: viewModel.formatTime(timestamp: weather.sys.sunset))
                     } else {
                         ForEach(0..<6) { _ in
                             WeatherInfoCardView(title: "-", value: "N/A")
