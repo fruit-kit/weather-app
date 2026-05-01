@@ -20,7 +20,7 @@ struct ContentView: View {
         ScrollView {
             VStack(spacing: 20) {
                 HStack {
-                    TextField("\(Image(systemName: "magnifyingglass")) Search city...", text: $viewModel.city)
+                    TextField("\(Image(systemName: "magnifyingglass")) Search city...", text: $viewModel.inputCity)
                         .padding(7)
                         .overlay(
                             RoundedRectangle(cornerRadius: 5)
