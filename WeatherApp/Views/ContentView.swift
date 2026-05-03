@@ -12,8 +12,8 @@ struct ContentView: View {
     @StateObject private var viewModel = WeatherViewModel()
     
     let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.flexible(), spacing: 20),
+        GridItem(.flexible(), spacing: 20)
     ]
     
     var body: some View {
