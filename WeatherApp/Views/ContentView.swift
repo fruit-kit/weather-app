@@ -23,7 +23,7 @@ struct ContentView: View {
                     TextField("\(Image(systemName: "magnifyingglass")) Search city...", text: $viewModel.inputCity)
                         .padding(7)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 5)
+                            RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.gray, lineWidth: 1)
                         )
                     Button {
@@ -37,21 +37,28 @@ struct ContentView: View {
                     .foregroundStyle(.gray)
                 }
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text(viewModel.weather?.name ?? "N/A")
+                        .foregroundStyle(.black)
                     HStack {
                         if let weather = viewModel.weather {
                             Text("\(Int(weather.main.temp))°")
-                                .font(.system(size: 32))
+                                .font(.system(size: 42))
                                 .fontWeight(.bold)
+                                .foregroundStyle(.black)
                             if let icon = weather.weather.first?.icon {
                                 Image(systemName: mapWeather(icon: icon))
+                                    .font(.system(size: 30))
                             } else {
                                 Image(systemName: "questionmark")
+                                    .font(.system(size: 30))
                             }
                         } else {
                             Text("N/A")
+                                .font(.system(size: 42))
+                                .fontWeight(.bold)
                             Image(systemName: "questionmark")
+                                .font(.system(size: 30))
                         }
                     }
                     if let weather = viewModel.weather {
@@ -68,31 +75,31 @@ struct ContentView: View {
                 .foregroundStyle(.gray)
                 .padding()
                 .overlay(
-                    RoundedRectangle(cornerRadius: 5)
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray)
                 )
                 
                 LazyVGrid(columns: columns, spacing: 20) {
                     if let weather = viewModel.weather {
                         WeatherInfoCardView(title: "Feels like",
-                                            value: "\(Int(weather.main.feelsLike))°")
+                                            value: "\(Int(weather.main.feelsLike))°", image: "thermometer")
                         WeatherInfoCardView(title: "Wind",
-                                            value: "\(Int(weather.wind.speed)) m/s")
+                                            value: "\(Int(weather.wind.speed)) m/s", image: "wind")
                         WeatherInfoCardView(title: "Humidity",
-                                            value: "\(Int(weather.main.humidity))%")
+                                            value: "\(Int(weather.main.humidity))%", image: "drop")
                         WeatherInfoCardView(title: "Pressure",
-                                            value: "\(Int(weather.main.pressure)) hPa")
+                                            value: "\(Int(weather.main.pressure)) hPa", image: "gauge")
                         WeatherInfoCardView(title: "Visibility",
-                                            value: "\(Int(weather.visibility / 1000)) km")
+                                            value: "\(Int(weather.visibility / 1000)) km", image: "eye")
                         WeatherInfoCardView(title: "Cloudiness",
-                                            value: "\(Int(weather.clouds.all))%")
+                                            value: "\(Int(weather.clouds.all))%", image: "cloud")
                         WeatherInfoCardView(title: "Sunrise",
-                                            value: viewModel.formatTime(timestamp: weather.sys.sunrise))
+                                            value: viewModel.formatTime(timestamp: weather.sys.sunrise), image: "sunrise")
                         WeatherInfoCardView(title: "Sunset",
-                                            value: viewModel.formatTime(timestamp: weather.sys.sunset))
+                                            value: viewModel.formatTime(timestamp: weather.sys.sunset), image: "sunset")
                     } else {
                         ForEach(0..<6) { _ in
-                            WeatherInfoCardView(title: "-", value: "N/A")
+                            WeatherInfoCardView(title: "-", value: "N/A", image: "questionmark")
                         }
                     }
                     
