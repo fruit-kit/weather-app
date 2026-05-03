@@ -17,15 +17,32 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        ScrollView {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color.white,
+                    Color.blue.opacity(0.25)
+                ],
+                startPoint: .bottom,
+                endPoint: .top
+            )
+            .ignoresSafeArea()
+            
+            ScrollView {
             VStack(spacing: 20) {
                 HStack {
                     TextField("\(Image(systemName: "magnifyingglass")) Search city...", text: $viewModel.inputCity)
-                        .padding(7)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.gray, lineWidth: 1)
+                        .padding(10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.systemBackground))
+                                .opacity(0.5)
                         )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.2))
+                        )
+                        .shadow(color: .black.opacity(0.1), radius: 10, y: 6)
                     Button {
                         Task {
                             await viewModel.fetch()
@@ -36,48 +53,52 @@ struct ContentView: View {
                     .padding(7)
                     .foregroundStyle(.gray)
                 }
-                
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(viewModel.weather?.name ?? "N/A")
-                        .foregroundStyle(.black)
-                    HStack {
-                        if let weather = viewModel.weather {
-                            Text("\(Int(weather.main.temp))°")
-                                .font(.system(size: 42))
-                                .fontWeight(.bold)
-                                .foregroundStyle(.black)
-                            if let icon = weather.weather.first?.icon {
-                                Image(systemName: mapWeather(icon: icon))
-                                    .font(.system(size: 30))
+                ZStack {
+                    Image(.bg)
+                        .resizable()
+                        .scaledToFill()
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(viewModel.weather?.name ?? "N/A")
+                            .foregroundStyle(.black)
+                            .font(.system(size: 20))
+                        HStack {
+                            if let weather = viewModel.weather {
+                                Text("\(Int(weather.main.temp))°")
+                                    .font(.system(size: 80))
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.black)
+                                if let icon = weather.weather.first?.icon {
+                                    Image(systemName: mapWeather(icon: icon))
+                                        .font(.system(size: 40))
+                                } else {
+                                    Image(systemName: "questionmark")
+                                        .font(.system(size: 40))
+                                }
                             } else {
+                                Text("N/A")
+                                    .font(.system(size: 42))
+                                    .fontWeight(.bold)
                                 Image(systemName: "questionmark")
-                                    .font(.system(size: 30))
+                                    .font(.system(size: 40))
                             }
-                        } else {
-                            Text("N/A")
-                                .font(.system(size: 42))
-                                .fontWeight(.bold)
-                            Image(systemName: "questionmark")
-                                .font(.system(size: 30))
                         }
-                    }
-                    if let weather = viewModel.weather {
-                        Text(weather.weather.first?.description ?? "N/A")
-                    }
-                    HStack{
                         if let weather = viewModel.weather {
-                            Text("Max: \(Int(weather.main.tempMax))°")
-                            Text("Min: \(Int(weather.main.tempMin))°")
+                            Text(weather.weather.first?.description ?? "N/A")
+                        }
+                        HStack{
+                            if let weather = viewModel.weather {
+                                Text("Max: \(Int(weather.main.tempMax))°")
+                                Text("Min: \(Int(weather.main.tempMin))°")
+                            }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(.gray)
+                    .padding()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(.gray)
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray)
-                )
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .shadow(color: .black.opacity(0.2), radius: 10, y: 6)
+                
                 
                 LazyVGrid(columns: columns, spacing: 20) {
                     if let weather = viewModel.weather {
@@ -108,6 +129,7 @@ struct ContentView: View {
             }
             .padding()
         }
+    }
     }
 }
 
