@@ -18,7 +18,7 @@ final class WeatherService {
             throw URLError(.badURL)
         }
         
-        let apiKey = "d5f1fc7218c783007518b12043821547"
+        let apiKey = Secrets.weatherApiKey
         
         let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(decodedCity)&appid=\(apiKey)&units=metric"
         
