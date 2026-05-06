@@ -43,15 +43,12 @@ struct ContentView: View {
                                 .stroke(Color.gray.opacity(0.2))
                         )
                         .shadow(color: .black.opacity(0.1), radius: 10, y: 6)
-                    Button {
-                        Task {
-                            await viewModel.fetch()
+                        .submitLabel(.search)
+                        .onSubmit {
+                            Task {
+                                await viewModel.fetch()
+                            }
                         }
-                    } label: {
-                        Text("Search")
-                    }
-                    .padding(7)
-                    .foregroundStyle(.gray)
                 }
                 ZStack {
                     Image(.bg)
