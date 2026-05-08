@@ -50,53 +50,21 @@ struct ContentView: View {
                             }
                         }
                 }
-                ZStack {
-                    Image(.bg)
-                        .resizable()
-                        .scaledToFill()
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(viewModel.weather?.name ?? "N/A")
-                            .foregroundStyle(.black)
-                            .font(.system(size: 20))
-                        HStack {
-                            if let weather = viewModel.weather {
-                                Text("\(Int(weather.main.temp))°")
-                                    .font(.system(size: 80))
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.black)
-                                if let icon = weather.weather.first?.icon {
-                                    Image(systemName: mapWeather(icon: icon))
-                                        .font(.system(size: 40))
-                                } else {
-                                    Image(systemName: "questionmark")
-                                        .font(.system(size: 40))
-                                }
-                            } else {
-                                Text("N/A")
-                                    .font(.system(size: 42))
-                                    .fontWeight(.bold)
-                                Image(systemName: "questionmark")
-                                    .font(.system(size: 40))
-                            }
-                        }
-                        if let weather = viewModel.weather {
-                            Text(weather.weather.first?.description ?? "N/A")
-                        }
-                        HStack{
-                            if let weather = viewModel.weather {
-                                Text("Max: \(Int(weather.main.tempMax))°")
-                                Text("Min: \(Int(weather.main.tempMin))°")
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundStyle(.gray)
-                    .padding()
+                if let weather = viewModel.weather {
+                    MainWeatherInfoCardView(name: weather.name,
+                                 temp: Int(weather.main.temp),
+                                 icon: mapWeather(icon: weather.weather.first?.icon ?? "questionmark"),
+                                 description: weather.weather.first?.description ?? "N/A",
+                                 tempMax: Int(weather.main.tempMax),
+                                 tempMin: Int(weather.main.tempMin))
+                } else {
+                    MainWeatherInfoCardView(name: "N/A",
+                                 temp: nil,
+                                 icon: "questionmark",
+                                 description: "N/A",
+                                 tempMax: nil,
+                                 tempMin: nil)
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(color: .black.opacity(0.2), radius: 10, y: 6)
-                
-                
                 LazyVGrid(columns: columns, spacing: 20) {
                     if let weather = viewModel.weather {
                         WeatherInfoCardView(title: "Feels like",
